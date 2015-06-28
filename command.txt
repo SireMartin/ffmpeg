@@ -1,3 +1,3 @@
-raspivid -o - -t 0 -w 1280 -h 720 -fps 25 -b 3000000 -g 50 | ./ffmpeg -re -ar 44100 -ac 2 -acodec pcm_s16le -f s16le -ac 2 -i /dev/zero -f h264 -i - -vcodec copy -acodec aac -ab 128k -g 50 -strict experimental -f flv rtmp://192.168.0.163/hls/test
-#geen output en minder cpu (raspivid option -n)
 raspivid -n -o - -t 0 -w 640 -h 480 -fps 25 -b 3000000 -g 50 | ./ffmpeg -re -ar 44100 -ac 2 -acodec pcm_s16le -f s16le -ac 2 -i /dev/zero -f h264 -i - -vcodec copy -acodec aac -ab 128k -g 50 -strict experimental -f flv rtmp://127.0.0.1/live/test
+
+raspivid -n -mm matrix -w 640 -h 480 -fps 25 -g 250 -t 0 -b 1000000 -o - | ./ffmpeg -loglevel quiet -nostats -y -f h264 -i - -c:v copy -map 0:0 -f flv -rtmp_buffer 100 -rtmp_live live rtmp://localhost/live/test
